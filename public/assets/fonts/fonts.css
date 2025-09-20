@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'Halcom';
+  src: url('./fonts/Halcom-ExtraBold-BF648a71454d82a.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Halcom';
+  src: url('./fonts/Halcom-BoldItalic-BF648a7145597de.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}

@@ -1,0 +1,52 @@
+@import "tailwindcss";
+@font-face {
+  font-family: 'Halcom';
+  src: url('/assets/fonts/Halcom-ExtraBold-BF648a71454d82a.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Halcom-Medium';
+  src: url('/assets/fonts/Halcom-Medium-BF648a714568789.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --color-primary: #ffffff;
+  --color-secondary: #000000;
+  --color-tertiary: #bec400;
+}
+
+html, body { overflow-x: hidden; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Halcom-medium', sans-serif !important;
+}
+
+.section-heading,
+.section-text {
+  font-family: 'Halcom-medium', sans-serif !important;
+  font-style:normal;
+}
+
+p, h2 {
+  font-family: 'Halcom-medium', sans-serif;
+}
+
+.menu-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  background-color: black !important;
+}
