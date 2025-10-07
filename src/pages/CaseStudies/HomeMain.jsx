@@ -87,39 +87,39 @@ export default function CaseStudySection() {
         </div>
 
         {/* RIGHT SIDE WRAPPER */}
-<div className="flex flex-col items-center mt-14">
-  {/* Right card: image only */}
-  <div className="bg-white rounded-lg shadow-xl overflow-hidden"
-  style={{ height: 400 }}
-  >
-    <img
-      src={activeCard.img}
-      alt={activeCard.title}
-      className="w-full h-full object-cover rounded-lg"
-    />
-  </div>
+        <div className="flex flex-col items-center mt-14">
+          {/* Right card: image only */}
+          <div
+            className="bg-white rounded-lg shadow-xl overflow-hidden"
+            style={{ height: 400 }}
+          >
+            <img
+              src={activeCard.img}
+              alt={activeCard.title}
+              className="w-full h-full object-cover rounded-lg"
+            />
+          </div>
 
-  {/* Next button below the card, centered */}
-  <button
-    onClick={nextCard}
-    ref={(el) => {
-      if (el) {
-        gsap.killTweensOf(el);
-        gsap.to(el, {
-          y: -8,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          duration: 1.2,
-        });
-      }
-    }}
-    className="mt-8 px-5 py-2 rounded-lg font-bold bg-secondary hover:bg-accent text-white transition"
-  >
-    Next →
-  </button>
-</div>
-
+          {/* Next button below the card, centered */}
+          <button
+            onClick={nextCard}
+            ref={(el) => {
+              if (el) {
+                gsap.killTweensOf(el);
+                gsap.to(el, {
+                  y: -8,
+                  repeat: -1,
+                  yoyo: true,
+                  ease: "sine.inOut",
+                  duration: 1.2,
+                });
+              }
+            }}
+            className="mt-8 px-5 py-2 rounded-lg font-bold bg-secondary hover:bg-accent text-white transition"
+          >
+            Next →
+          </button>
+        </div>
       </div>
     </section>
   );

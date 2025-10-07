@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaQuestionCircle } from "react-icons/fa";
 import slugify from "../data/utils";
-import DOMPurify from "dompurify";
+import SEO from "../ReuseComponents/SEO";
 
 function parseContentBlocks(htmlString) {
   const tempDiv = document.createElement("div");
@@ -56,6 +56,17 @@ function BlogDetail() {
   }
 
   return (
+    <>
+    {blog && (
+  <SEO
+    title={blog.metaTitle || blog.title}
+    description={blog.metaDescription || blog.description}
+    image={blog.bannerImg || blog.img}
+    type="article"
+     canonicalUrl={`http://localhost:5173/${slugify(blog.title)}`}
+  />
+)}
+
     <div className="max-w-3xl mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
       <p className="text-gray-500 mb-6">{blog.localDateTime}</p>
@@ -117,6 +128,7 @@ function BlogDetail() {
         </div>
       )}
     </div>
+    </>
   );
 }
 

@@ -1,13 +1,40 @@
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import CaseStudies from "../../ReuseComponents/CaseStudies";
+import CaseStudies from "../../../ReuseComponents/CaseStudies";
+import SEO from "../../../ReuseComponents/SEO";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const faqs = [
+  {
+    q: "What is SEO and why is it important?",
+    a: "SEO (Search Engine Optimization) helps improve your website's visibility on search engines, attracting more organic traffic.",
+  },
+  {
+    q: "How long does SEO take to show results?",
+    a: "It usually takes 3-6 months to see significant improvements, depending on competition and website quality.",
+  },
+  {
+    q: "Do I need to keep doing SEO once I rank?",
+    a: "Yes, SEO is an ongoing process as competitors and algorithms change.",
+  },
+  {
+    q: "What's the difference between on-page and off-page SEO?",
+    a: "On-page SEO is optimizing your website's content, while off-page SEO is about building authority through backlinks.",
+  },
+  {
+    q: "Can SEO guarantee #1 ranking?",
+    a: "No ethical SEO can guarantee #1, but it can significantly improve your chances of ranking higher.",
+  },
+];
 
 const WebDevelopment = () => {
   const heroRef = useRef(null);
   const detailsRef = useRef(null);
+
+  const [activeIndex, setActiveIndex] = useState(null);
+  const contentRefs = useRef([]);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -36,8 +63,27 @@ const WebDevelopment = () => {
     return () => ctx.revert();
   }, []);
 
+  useLayoutEffect(() => {
+    contentRefs.current.forEach((el, i) => {
+      if (!el) return;
+      if (activeIndex === i) {
+        gsap.to(el, { height: "auto", duration: 0.4, ease: "power2.out" });
+      } else {
+        gsap.to(el, { height: 0, duration: 0.3, ease: "power2.in" });
+      }
+    });
+  }, [activeIndex]);
+
   return (
     <div className="font-sans text-gray-900">
+      <>
+            <SEO
+                    title="Home page | Shanmugavel Portfolio"
+                    description="Learn about Shanmugavel A, Frontend Developer and React expert."
+                    image="https://www.yourdomain.com/images/static-about.jpg" // static image
+                    canonicalUrl="https://www.brandandmediaworks.com/about"
+                  />
+          </>
       {/* Hero Section */}
       <section
         className="relative h-screen flex items-center justify-center bg-fixed bg-center bg-cover"
@@ -79,7 +125,7 @@ const WebDevelopment = () => {
         </div>
       </section>
 
-      <section className="relative max-w-7xl mx-auto px-6 md:px-12 py-32 grid grid-cols-1 md:grid-cols-3 gap-8 items-center bg-white">
+      <section className="relative max-w-7xl mx-auto px-6 md:px-12 md:py-32 grid grid-cols-1 md:grid-cols-3 gap-8 items-center bg-white">
         {/* Left Image */}
         <div className="flex items-start">
           <img
@@ -98,7 +144,7 @@ const WebDevelopment = () => {
             </p>
           </div>
 
-          <div className="p-6 bg-white shadow-md relative -ml-32 -mb-42">
+          <div className="md:block hidden p-6 bg-white shadow-md relative -ml-32 -mb-42">
             <p className="text-gray-600 ">
               This is the second row content inside the center column. Lorem
               ipsum dolor sit amet consectetur adipisicing elit. Dolor, ratione
@@ -118,12 +164,12 @@ const WebDevelopment = () => {
           <img
             src="https://media.istockphoto.com/photos/devices-on-table-with-responsive-design-picture-id614223078?k=6&m=614223078&s=612x612&w=0&h=uLJV6eOu0g72pPyoHCvwtk-2Zb8NXWtMMtjnbX6ESe4="
             alt="Right"
-            className="w-full h-[650px] relative -mb-50"
+            className="md:block hidden w-full h-[650px] relative -mb-50"
           />
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-24 py-24 bg-white">
+      <section className="max-w-7xl mx-auto px-6 md:px-24 md:py-24 bg-white">
         {/* Heading and paragraph on top */}
         <div className="mb-16 text-center">
           <div className="inline-block w-24 h-1 bg-accent mb-4"></div>
@@ -137,79 +183,65 @@ const WebDevelopment = () => {
           </p>
         </div>
 
-        {/* Grid with 2 columns below */}
-        <div className="grid grid-cols-3 gap-16 items-start">
-          {/* Left side: col-span-2 */}
-          <div className="col-span-2 space-y-20">
+        {/* Grid with 3 columns - stacked on mobile */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 items-start">
+          {/* Left side: 2 col span on md+ */}
+          <div className="md:col-span-2 space-y-16 md:space-y-20">
             {[
-              {
-                title: "Web Development",
-                paragraph:
-                  "Build fast, secure, and responsive websites tailored to your needs with the latest technologies.",
-              },
-              {
-                title: "Ecommerce Development",
-                paragraph:
-                  "Custom ecommerce platforms designed to scale, boost conversions, and offer a seamless shopping experience.",
-              },
-              {
-                title: "Content Management Systems",
-                paragraph:
-                  "Empower your team with intuitive CMS solutions that simplify content updates and management.",
-              },
-              {
-                title: "Custom Software Development",
-                paragraph:
-                  "Unique, business-specific solutions that streamline workflows and enhance productivity.",
-              },
-              {
-                title: "Digital Marketing",
-                paragraph:
-                  "Data-driven strategies to increase visibility, improve engagement, and drive customer growth.",
-              },
-            ].map(({ title, paragraph }, idx) => (
-              <div
-                key={idx}
-                className={`flex ${
-                  idx % 2 === 0 ? "justify-start" : "justify-end"
-                }`}
-              >
-                <div
-                  className={`max-w-xl transition-transform duration-300 hover:scale-105 ${
-                    idx % 2 === 0
-                      ? "text-left -mt-6"
-                      : "text-right -mt-6 relative"
-                  }`}
-                >
-                  <h3 className="text-2xl font-semibold text-gray-900 flex items-center gap-3">
-                    {/* Decorative accent dot */}
-                    <span
-                      className={`inline-block w-3 h-3 rounded-full ${
-                        idx % 2 === 0 ? "bg-accent" : "bg-accent"
-                      }`}
-                    ></span>
-                    {title}
-                  </h3>
-                  <p
-                    className={`text-gray-700 text-lg leading-relaxed ${
-                      idx % 2 === 0 ? "ml-4" : "mr-4"
-                    }`}
-                  >
-                    {paragraph}
-                  </p>
-                </div>
-              </div>
-            ))}
+  {
+    title: "Web Development",
+    paragraph:
+      "Build fast, secure, and responsive websites tailored to your needs with the latest technologies.",
+  },
+  {
+    title: "Ecommerce Development",
+    paragraph:
+      "Custom ecommerce platforms designed to scale, boost conversions, and offer a seamless shopping experience.",
+  },
+  {
+    title: "Content Management Systems",
+    paragraph:
+      "Empower your team with intuitive CMS solutions that simplify content updates and management.",
+  },
+  {
+    title: "Custom Software Development",
+    paragraph:
+      "Unique, business-specific solutions that streamline workflows and enhance productivity.",
+  },
+  {
+    title: "Digital Marketing",
+    paragraph:
+      "Data-driven strategies to increase visibility, improve engagement, and drive customer growth.",
+  },
+].map(({ title, paragraph }, idx) => (
+  <div
+    key={idx}
+    className={`flex flex-col md:flex-row ${
+      idx % 2 === 0 ? "" : "md:flex-row-reverse"
+    } items-center md:items-start gap-6`}
+  >
+    <div className="max-w-xl transition-transform duration-300 hover:scale-105">
+      <h3 className="text-2xl font-semibold text-gray-900 flex items-center gap-3">
+        <span className="inline-block w-3 h-3 rounded-full bg-accent"></span>
+        {title}
+      </h3>
+      <p className="text-gray-700 text-lg leading-relaxed mt-2">
+        {paragraph}
+      </p>
+    </div>
+  </div>
+))}
+
           </div>
 
-          {/* Right side: col-span-1 */}
-          <div className="col-span-1 flex justify-end">
-            <div className="sticky top-24">
+          {/* Right side image, full width on mobile */}
+          <div className="md:col-span-1 flex justify-center md:justify-end">
+            <div className="sticky top-24 max-w-full md:max-w-[360px]">
               <img
                 src="https://i.pinimg.com/originals/7b/d6/c8/7bd6c84c93ea1f92555db10e77c49c24.jpg"
                 alt="Web Development Illustration"
                 className="max-w-full rounded-2xl shadow-lg object-cover"
-                style={{ maxWidth: "360px" }}
+                loading="lazy"
               />
             </div>
           </div>
@@ -237,19 +269,20 @@ const WebDevelopment = () => {
               With our expert team, we ensure your projects are executed
               seamlessly, on time, and with maximum impact.
             </p>
-            <div className="p-6 mt-4 bg-white shadow-md relative -mr-42 z-10 border border-gray-200">
-  <h3 className="text-2xl font-bold text-gray-900 mb-3">
-    Ready to <span className="text-accent">Grow</span> Your Business?
-  </h3>
-  <p className="text-gray-700 mb-4 text-lg font-medium">
-    We provide innovative solutions tailored to your business needs,
-    helping you grow faster and smarter. Our expert team ensures
-    projects are delivered seamlessly with maximum impact.
-  </p>
-  <button className="px-6 py-3 bg-accent text-white font-semibold rounded-3xl shadow hover:bg-accent/90 transition">
-    Get Started
-  </button>
-</div>
+            <div className="p-6 mt-4 w-[50vh] md:w-[100vh] bg-white shadow-md relative -mr-42 z-10 border border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                Ready to <span className="text-accent">Grow</span> Your
+                Business?
+              </h3>
+              <p className="text-gray-700 mb-4 text-lg font-medium">
+                We provide innovative solutions tailored to your business needs,
+                helping you grow faster and smarter. Our expert team ensures
+                projects are delivered seamlessly with maximum impact.
+              </p>
+              <button className="px-6 py-3 bg-accent text-white font-semibold rounded-3xl shadow hover:bg-accent/90 transition">
+                Get Started
+              </button>
+            </div>
           </div>
 
           {/* Right Column */}
@@ -272,6 +305,54 @@ const WebDevelopment = () => {
       </section>
 
       <CaseStudies />
+
+      <section className="relative flex flex-col items-center justify-center text-center mt-4 mb-20 px-4 sm:px-6">
+        {/* Content */}
+        <div className="relative z-10 max-w-3xl">
+          <div className="border-accent border-2"></div>
+          <h1 className="text-4xl sm:text-6xl md:text-8xl text-gray-300 font-extrabold">
+            QUESTIONS
+          </h1>
+          <div className="text-lg sm:text-xl md:text-2xl text-secondary relative -mt-8 sm:-mt-12 md:-mt-16">
+            FAQ's on SEO Service
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto p-4 sm:p-6 mt-10 sm:mt-16 bg-white rounded-xl w-full">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">
+            FAQs
+          </h2>
+          {faqs.map((faq, i) => (
+            <div
+              key={i}
+              className="border-b border-gray-200 py-3 sm:py-4 cursor-pointer"
+              onClick={() => setActiveIndex(activeIndex === i ? null : i)}
+            >
+              {/* Question */}
+              <div className="flex justify-between items-center gap-4">
+                <h3 className="text-base sm:text-lg font-semibold">{faq.q}</h3>
+                <span
+                  className={`transform transition-transform duration-300 ${
+                    activeIndex === i ? "rotate-45 text-accent" : "rotate-0"
+                  }`}
+                >
+                  +
+                </span>
+              </div>
+
+              {/* Answer */}
+              <div
+                ref={(el) => (contentRefs.current[i] = el)}
+                className="overflow-hidden h-0"
+              >
+                <p className="mt-2 sm:mt-3 text-gray-600 text-sm sm:text-base">
+                  {faq.a}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

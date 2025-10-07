@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 gsap.registerPlugin(ScrollTrigger);
+import SEO from "../ReuseComponents/SEO";
 
 export default function AboutUs() {
   const sectionRef = useRef(null);
@@ -36,6 +37,13 @@ export default function AboutUs() {
   }, []);
 
   return (
+    <>
+    <SEO
+        title="About Me | Shanmugavel Portfolio"
+        description="Learn about Shanmugavel A, Frontend Developer and React expert."
+        image="https://www.yourdomain.com/images/static-about.jpg" // static image
+        canonicalUrl="https://www.brandandmediaworks.com/about"
+      />
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 flex flex-col items-center px-6 py-12">
       <motion.h1
         initial={{ opacity: 0, x: -50 }}
@@ -104,5 +112,6 @@ export default function AboutUs() {
         </motion.div>
       </div>
     </div>
+    </>
   );
 }

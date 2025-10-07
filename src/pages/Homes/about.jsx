@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const aboutItems = [
   {
@@ -58,7 +57,9 @@ const AboutSection = () => {
               <h4 className="text-3xl font-bold mb-4 text-secondary">
                 {item.title}
               </h4>
-              <p className="mb-4 tracking-wider halcom-normal">{item.description}</p>
+              <p className="mb-4 tracking-wider halcom-normal">
+                {item.description}
+              </p>
               <br />
               <br />
               <button
@@ -79,11 +80,11 @@ const AboutSection = () => {
             </div>
 
             <div className="w-full md:w-1/2 flex justify-center p-6">
-              <DotLottieReact
-      src="https://lottie.host/75fa0f10-453e-4e68-9a54-f0b7886e8d7b/qKIrywRHLg.lottie"
-      loop
-      autoplay
-    />
+              <img
+                src="/assets/Logo/BMW-logo.png" 
+                alt="Logo"
+                className="opacity-80 w-[50vh] h-32" 
+              />
             </div>
           </div>
         ))}

@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay, Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -8,8 +8,9 @@ import "swiper/css/autoplay";
 import { gsap } from "gsap";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import CaseStudies from "../../ReuseComponents/CaseStudies";
-import Blogs from "../../ReuseComponents/Blogs";
+import CaseStudies from "../../../ReuseComponents/CaseStudies";
+import Blogs from "../../../ReuseComponents/Blogs";
+import SEO from "../../../ReuseComponents/SEO";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -240,6 +241,12 @@ export default function SEOPage() {
 
   return (
     <div className="page-container">
+      <SEO
+        title="SEO service | Shanmugavel Portfolio"
+        description="Learn about Shanmugavel A, Frontend Developer and React expert."
+        image="https://www.yourdomain.com/images/static-about.jpg" // static image
+        canonicalUrl="https://www.brandandmediaworks.com/about"
+      />
       {/* === HERO SECTION === */}
       <section className="relative h-[110vh] flex items-center overflow-visible">
         <Swiper

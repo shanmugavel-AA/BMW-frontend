@@ -23,7 +23,7 @@ const useIsMobile = () => {
   return isMobile;
 };
 
-// ResizeObserver for responsive updates
+// ResizeObserver for responsive updates (measures height)
 const useResizeObserver = (callback, elements, dependencies) => {
   useEffect(() => {
     if (!window.ResizeObserver) {
@@ -46,7 +46,7 @@ const useResizeObserver = (callback, elements, dependencies) => {
   }, dependencies);
 };
 
-// Wait for all images to load before measuring width
+// Wait for all images to load before measuring height
 const useImageLoader = (seqRef, onLoad, dependencies) => {
   useEffect(() => {
     const images = seqRef.current?.querySelectorAll('img') ?? [];
@@ -79,18 +79,19 @@ const useImageLoader = (seqRef, onLoad, dependencies) => {
   }, dependencies);
 };
 
-// Animation loop, with mobile optimization
-const useAnimationLoopOptimized = (trackRef, targetVelocity, seqWidth, isHovered, pauseOnHover, isMobile) => {
+// Animation loop for vertical movement
+const useAnimationLoopVertical = (trackRef, targetVelocity, seqHeight, isHovered, pauseOnHover, isMobile) => {
   const rafRef = useRef(null);
   const lastTimestampRef = useRef(null);
   const offsetRef = useRef(0);
   const velocityRef = useRef(0);
+
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-    if (seqWidth > 0) {
-      offsetRef.current = ((offsetRef.current % seqWidth) + seqWidth) % seqWidth;
-      track.style.transform = `translate3d(${-offsetRef.current}px,0,0)`;
+    if (seqHeight > 0) {
+      offsetRef.current = ((offsetRef.current % seqHeight) + seqHeight) % seqHeight;
+      track.style.transform = `translate3d(0,${-offsetRef.current}px,0)`;
     }
     let lastMobileFrame = 0;
     const MOBILE_FRAME_INTERVAL = 1000 / 60; // ~40fps
@@ -109,11 +110,11 @@ const useAnimationLoopOptimized = (trackRef, targetVelocity, seqWidth, isHovered
         }
         lastMobileFrame = timestamp;
       }
-      if (seqWidth > 0) {
+      if (seqHeight > 0) {
         let nextOffset = offsetRef.current + velocityRef.current * deltaTime;
-        nextOffset = ((nextOffset % seqWidth) + seqWidth) % seqWidth;
+        nextOffset = ((nextOffset % seqHeight) + seqHeight) % seqHeight;
         offsetRef.current = nextOffset;
-        track.style.transform = `translate3d(${-offsetRef.current}px,0,0)`;
+        track.style.transform = `translate3d(0,${-offsetRef.current}px,0)`;
       }
       rafRef.current = requestAnimationFrame(animate);
     };
@@ -125,15 +126,15 @@ const useAnimationLoopOptimized = (trackRef, targetVelocity, seqWidth, isHovered
       }
       lastTimestampRef.current = null;
     };
-  }, [targetVelocity, seqWidth, isHovered, pauseOnHover, trackRef, isMobile]);
+  }, [targetVelocity, seqHeight, isHovered, pauseOnHover, trackRef, isMobile]);
 };
 
-export const LogoLoop = memo(({
+export const VerticalLogoLoop = memo(({
   logos,
   speed = 120,
-  direction = 'left',
-  width = '100%',
-  logoHeight = 28,
+  direction = 'down', // 'down' or 'up'
+  height = '100%',
+  logoWidth = 120,
   gap = 32,
   pauseOnHover = true,
   fadeOut = false,
@@ -147,13 +148,13 @@ export const LogoLoop = memo(({
   const containerRef = useRef(null);
   const trackRef = useRef(null);
   const seqRef = useRef(null);
-  const [seqWidth, setSeqWidth] = useState(0);
+  const [seqHeight, setSeqHeight] = useState(0);
   const [copyCount, setCopyCount] = useState(ANIMATION_CONFIG.MIN_COPIES);
   const [isHovered, setIsHovered] = useState(false);
 
   const targetVelocity = useMemo(() => {
     const magnitude = Math.abs(speed);
-    const directionMultiplier = direction === 'left' ? 1 : -1;
+    const directionMultiplier = direction === 'down' ? 1 : -1;
     const speedMultiplier = speed < 0 ? -1 : 1;
     return isMobile
       ? magnitude * 0.55 * directionMultiplier * speedMultiplier
@@ -161,19 +162,19 @@ export const LogoLoop = memo(({
   }, [speed, direction, isMobile]);
 
   const updateDimensions = useCallback(() => {
-    const containerWidth = containerRef.current?.clientWidth ?? 0;
-    const sequenceWidth = seqRef.current?.getBoundingClientRect?.()?.width ?? 0;
-    if (sequenceWidth > 0) {
-      setSeqWidth(Math.ceil(sequenceWidth));
-      let copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
+    const containerHeight = containerRef.current?.clientHeight ?? 0;
+    const sequenceHeight = seqRef.current?.getBoundingClientRect?.()?.height ?? 0;
+    if (sequenceHeight > 0) {
+      setSeqHeight(Math.ceil(sequenceHeight));
+      let copiesNeeded = Math.ceil(containerHeight / sequenceHeight) + ANIMATION_CONFIG.COPY_HEADROOM;
       if (isMobile) copiesNeeded = Math.min(4, copiesNeeded);
       setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
     }
   }, [isMobile]);
 
-  useResizeObserver(updateDimensions, [containerRef, seqRef], [logos, gap, logoHeight, isMobile]);
-  useImageLoader(seqRef, updateDimensions, [logos, gap, logoHeight, isMobile]);
-  useAnimationLoopOptimized(trackRef, targetVelocity, seqWidth, isHovered, pauseOnHover, isMobile);
+  useResizeObserver(updateDimensions, [containerRef, seqRef], [logos, gap, logoWidth, isMobile]);
+  useImageLoader(seqRef, updateDimensions, [logos, gap, logoWidth, isMobile]);
+  useAnimationLoopVertical(trackRef, targetVelocity, seqHeight, isHovered, pauseOnHover, isMobile);
 
   const handleMouseEnter = useCallback(() => {
     if (!isMobile && pauseOnHover) setIsHovered(true);
@@ -185,7 +186,7 @@ export const LogoLoop = memo(({
   const logoLists = useMemo(() =>
     Array.from({ length: copyCount }, (_, copyIndex) => (
       <ul
-        className="flex items-center"
+        className="flex flex-col items-center"
         key={`copy-${copyIndex}`}
         role="list"
         aria-hidden={copyIndex > 0}
@@ -197,8 +198,8 @@ export const LogoLoop = memo(({
             role="listitem"
             key={`${copyIndex}-${itemIndex}`}
             style={{
-              marginRight: `${gap}px`,
-              fontSize: `${logoHeight}px`,
+              marginBottom: `${gap}px`,
+              fontSize: `${logoWidth}px`,
               overflow: !isMobile && scaleOnHover ? 'visible' : undefined,
             }}
           >
@@ -217,7 +218,7 @@ export const LogoLoop = memo(({
                   loading="lazy"
                   decoding={!isMobile ? 'async' : undefined}
                   draggable={false}
-                  style={{ height: `${logoHeight}px`, width: item.width ?? 'auto' }}
+                  style={{ width: `${logoWidth}px`, height: item.height ?? 'auto' }}
                   className={`block object-contain pointer-events-none transition-transform duration-300 ${!isMobile && scaleOnHover ? 'group-hover:scale-120' : ''}`}
                 />
               </a>
@@ -229,7 +230,7 @@ export const LogoLoop = memo(({
                 loading="lazy"
                 decoding={!isMobile ? 'async' : undefined}
                 draggable={false}
-                style={{ height: `${logoHeight}px`, width: item.width ?? 'auto' }}
+                style={{ width: `${logoWidth}px`, height: item.height ?? 'auto' }}
                 className={`block object-contain pointer-events-none transition-transform duration-300 ${!isMobile && scaleOnHover ? 'group-hover:scale-120' : ''}`}
               />
             )}
@@ -237,20 +238,20 @@ export const LogoLoop = memo(({
         ))}
       </ul>
     )),
-    [copyCount, logos, gap, logoHeight, scaleOnHover, isMobile]
+    [copyCount, logos, gap, logoWidth, scaleOnHover, isMobile]
   );
 
   return (
     <div
       ref={containerRef}
       className={`
-        relative overflow-x-hidden
+        relative overflow-y-hidden
         ${fadeOut ? '' : ''}
         ${!isMobile && scaleOnHover ? 'pt-[2.8px] pb-[2.8px]' : ''}
         ${className || ''}
       `}
       style={{
-        width: toCssLength(width) ?? '100%',
+        height: toCssLength(height) ?? '100%',
         userSelect: isMobile ? 'none' : undefined,
         ...style,
       }}
@@ -262,23 +263,23 @@ export const LogoLoop = memo(({
       {fadeOut && (
         <>
           <div
-            className="absolute left-0 top-0 bottom-0 pointer-events-none z-10"
+            className="absolute left-0 top-0 right-0 pointer-events-none z-10"
             style={{
-              width: 'clamp(24px,8%,120px)',
-              background: `linear-gradient(to right, ${fadeOutColor} 0%, rgba(0,0,0,0) 100%)`,
+              height: 'clamp(24px,8%,120px)',
+              background: `linear-gradient(to bottom, ${fadeOutColor} 0%, rgba(0,0,0,0) 100%)`,
             }}
           />
           <div
-            className="absolute right-0 top-0 bottom-0 pointer-events-none z-10"
+            className="absolute left-0 bottom-0 right-0 pointer-events-none z-10"
             style={{
-              width: 'clamp(24px,8%,120px)',
-              background: `linear-gradient(to left, ${fadeOutColor} 0%, rgba(0,0,0,0) 100%)`,
+              height: 'clamp(24px,8%,120px)',
+              background: `linear-gradient(to top, ${fadeOutColor} 0%, rgba(0,0,0,0) 100%)`,
             }}
           />
         </>
       )}
       <div
-        className="flex w-max will-change-transform select-none"
+        className="flex flex-col w-max will-change-transform select-none"
         ref={trackRef}
       >
         {logoLists}
@@ -287,5 +288,5 @@ export const LogoLoop = memo(({
   );
 });
 
-LogoLoop.displayName = 'LogoLoop';
-export default LogoLoop;
+VerticalLogoLoop.displayName = 'VerticalLogoLoop';
+export default VerticalLogoLoop;

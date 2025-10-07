@@ -20,15 +20,34 @@ import ScrollToTop from "./data/ScrollToTop";
 import ScrollToTopButton from "./data/ScrollToTopButton"
 import ContactSticky from "./data/ContactSticky"
 
-import SEO from "./pages/services/Seo";
-import SocialMedia from "./pages/services/SocialMedia";
-import Performance from "./pages/services/Performance";
-import Influencer from "./pages/services/Influencer";
-import Multilingual from "./pages/services/Multilingual";
-import WebDevelopment from "./pages/services/WebDevelopment";
-import Branding from "./pages/services/Branding";
-import Video from "./pages/services/Video";
-import Automation from "./pages/services/Automation";
+//Digital Marketing Services
+import DigitalMarketingServices from "./pages/services/Digital-Marketing-Services/DigitalMarketingServices";
+import SocialMediaMarketing from "./pages/services/Digital-Marketing-Services/SocialMediaMarketing";
+import SearchEngineOptimization from "./pages/services/Digital-Marketing-Services/SearchEngineOptimization";
+import SearchEngineMarketing from "./pages/services/Digital-Marketing-Services/SearchEngineMarketing";
+import VideoProduction from "./pages/services/Digital-Marketing-Services/VideoProduction";
+import ContentMarketing from "./pages/services/Digital-Marketing-Services/ContentMarketing";
+import EmailMarketing from "./pages/services/Digital-Marketing-Services/EmailMarketing";
+import InfluencerMarketing from "./pages/services/Digital-Marketing-Services/InfluencerMarketing";
+import BrandStrategy from "./pages/services/Digital-Marketing-Services/BrandStrategy";
+
+//Graphic Design Services
+import GraphicDesignServices from "./pages/services/GraphicDesignServices/GraphicDesignServices";
+import LogoDesign from "./pages/services/GraphicDesignServices/LogoDesign";
+import BannerDesign from "./pages/services/GraphicDesignServices/BannerDesign";
+import BrochureDesign from "./pages/services/GraphicDesignServices/BrochureDesign";
+import BusinessCardDesign from "./pages/services/GraphicDesignServices/BusinessCardDesign";
+import FlyerDesign from "./pages/services/GraphicDesignServices/FlyerDesign";
+import PackageDesign from "./pages/services/GraphicDesignServices/PackageDesign";
+
+
+//Web Design Services
+import WebDesignServices from "./pages/services/Web-Design-Services/WebDesignServices";
+import UIUXDesign from "./pages/services/Web-Design-Services/UIUXDesign";
+import WebsiteRedesign from "./pages/services/Web-Design-Services/WebsiteRedesign";
+
+//Website Development Services
+import WebsiteDevelopment from "./pages/services/Website-Development/WebsiteDevelopment";
 
 import Ecommerce from "./pages/business-solutions/Ecommerce";
 import Retail from "./pages/business-solutions/Retail";
@@ -63,16 +82,33 @@ function App() {
           <Route path="/case-study" element={<CaseStudy />} />
           <Route path="/case-studies/:id" element={<CaseStudyDetail />} />
 
-          {/* Services subpages */}
-          <Route path="/services/seo" element={<SEO />} />
-          <Route path="/services/social-media" element={<SocialMedia />} />
-          <Route path="/services/web-designing" element={<Performance />} />
-          <Route path="/services/influencer" element={<Influencer />} />
-          <Route path="/services/multilingual" element={<Multilingual />} />
-          <Route path="/services/web-development" element={<WebDevelopment />} />
-          <Route path="/services/branding" element={<Branding />} />
-          <Route path="/services/video" element={<Video />} />
-          <Route path="/services/automation" element={<Automation />} />
+          {/* Digital Marketing Services */}
+          <Route path="/digital-marketing-services-in-dubai" element={<DigitalMarketingServices />} />
+          <Route path="/social-media-marketing-in-dubai" element={<SocialMediaMarketing />} />
+          <Route path="/seo-company-in-dubai" element={<SearchEngineOptimization />} />
+          <Route path="/search-engine-marketing-in-dubai" element={<SearchEngineMarketing />} />
+          <Route path="/video-production-in-dubai" element={<VideoProduction />} />
+          <Route path="/content-marketing-in-dubai" element={<ContentMarketing />} />
+          <Route path="/email-marketing-in-dubai" element={<EmailMarketing />} />
+          <Route path="/influencer-marketing-in-dubai" element={<InfluencerMarketing />} />
+          <Route path="/brand-strategy-in-dubai" element={<BrandStrategy />} />
+
+          {/* Graphic Design Services */}
+          <Route path="/graphic-design-services-in-dubai" element={<GraphicDesignServices />} />
+          <Route path="/logo-design-in-dubai" element={<LogoDesign />} />
+          <Route path="/banner-design-in-dubai" element={<BannerDesign />} />
+          <Route path="/brochure-design-in-dubai" element={<BrochureDesign />} />
+          <Route path="/business-card-design-in-dubai" element={<BusinessCardDesign />} />
+          <Route path="/flyer-design-in-dubai" element={<FlyerDesign />} />
+          <Route path="/package-design-in-dubai" element={<PackageDesign />} />
+
+          {/* Web Design Services */}
+          <Route path="/web-design-services-in-dubai" element={<WebDesignServices />} />
+          <Route path="/ui-ux-design-in-dubai" element={<UIUXDesign />} />
+          <Route path="/website-redesign-in-dubai" element={<WebsiteRedesign />} />
+
+          {/* Website Development Services */}
+          <Route path="/website-development-services-in-dubai" element={<WebsiteDevelopment />} />
 
           {/* Business Solutions subpages */}
           <Route path="/business-solutions/ecommerce" element={<Ecommerce />} />

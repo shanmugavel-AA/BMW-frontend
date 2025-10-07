@@ -13,8 +13,6 @@ const ClientCarousel = ({ logos, bgColor }) => {
           logoHeight={80}
           gap={40}
           pauseOnHover={true}
-          fadeOut={true}
-          fadeOutColor="#fff"
           scaleOnHover={true}
           ariaLabel="Client Logos Row 1"
         />
@@ -27,8 +25,6 @@ const ClientCarousel = ({ logos, bgColor }) => {
           logoHeight={80}
           gap={40}
           pauseOnHover={true}
-          fadeOut={true}
-          fadeOutColor="#fff"
           scaleOnHover={true}
           ariaLabel="Client Logos Row 2"
         />

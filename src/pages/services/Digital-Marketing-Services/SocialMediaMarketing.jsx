@@ -1,9 +1,10 @@
 import React, { useRef, useLayoutEffect,useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import HorizontalScrollSMM from "../../ReuseComponents/HorizontalScrollSMM";
-import CaseStudies from "../../ReuseComponents/CaseStudies";
-import Blogs from "../../ReuseComponents/Blogs";
+import HorizontalScrollSMM from "../../../ReuseComponents/HorizontalScrollSMM";
+import CaseStudies from "../../../ReuseComponents/CaseStudies";
+import Blogs from "../../../ReuseComponents/Blogs";
+import SEO from "../../../ReuseComponents/SEO";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -204,6 +205,12 @@ const SocialMedia = () => {
 
   return (
     <div className="font-sans bg-[#222] text-gray-900">
+      <SEO
+        title="About Me | Shanmugavel Portfolio"
+        description="Learn about Shanmugavel A, Frontend Developer and React expert."
+        image="https://www.yourdomain.com/images/static-about.jpg" // static image
+        canonicalUrl="https://www.brandandmediaworks.com/about"
+      />
       {/* Hero Section */}
       <section
         className="relative h-screen flex items-center justify-center bg-fixed bg-center bg-cover"

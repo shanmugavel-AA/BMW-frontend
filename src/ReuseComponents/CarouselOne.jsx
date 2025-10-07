@@ -8,29 +8,15 @@ const ClientCarousel = ({ logos, bgColor }) => {
         {/* Row 1: Left to Right */}
         <LogoLoop
           logos={logos}
-          speed={60} // adjust speed
-          direction="left"
-          logoHeight={80}
+          speed={50} // adjust speed
+          direction="right"
+          logoHeight={120}
           gap={40}
           pauseOnHover={true}
           fadeOut={true}
           fadeOutColor="#fff"
           scaleOnHover={true}
           ariaLabel="Client Logos Row 1"
-        />
-
-        {/* Row 2: Right to Left */}
-        <LogoLoop
-          logos={logos}
-          speed={60} // adjust speed
-          direction="right"
-          logoHeight={80}
-          gap={40}
-          pauseOnHover={true}
-          fadeOut={true}
-          fadeOutColor="#fff"
-          scaleOnHover={true}
-          ariaLabel="Client Logos Row 2"
         />
       </div>
     </section>

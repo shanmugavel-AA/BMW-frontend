@@ -1,4 +1,350 @@
+import { useState, useEffect, useRef } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
+
+const megaMenu = [
+  {
+    label: "Digital Marketing Services",
+    link: "/digital-marketing-services-in-dubai",
+    items: [
+      {
+        label: "Search Engine Optimization",
+        link: "/seo-company-in-dubai",
+      },
+      {
+        label: "Social Media Marketing",
+        link: "/social-media-marketing-in-dubai",
+      },
+      {
+        label: "Search Engine Marketing",
+        link: "/search-engine-marketing-in-dubai",
+      },
+      {
+        label: "Content Marketing",
+        link: "/content-marketing-in-dubai",
+      },
+      { label: "Email Marketing", link: "/email-marketing-in-dubai" },
+      {
+        label: "Influencer Marketing",
+        link: "/influencer-marketing-in-dubai",
+      },
+      { label: "Video Production", link: "/video-production-in-dubai" },
+      { label: "Brand Strategy", link: "/brand-strategy-in-dubai" },
+    ],
+  },
+  {
+    label: "Graphic Design Services",
+    link: "/graphic-design-services-in-dubai",
+    items: [
+      { label: "Logo Design", link: "/logo-design-in-dubai" },
+      { label: "Banner Design", link: "/banner-design-in-dubai" },
+      {
+        label: "Brochure Design",
+        link: "/brochure-design-in-dubai",
+      },
+      {
+        label: "Flyer Design",
+        link: "/flyer-design-in-dubai",
+      },
+      {
+        label: "Package Design",
+        link: "/package-design-in-dubai",
+      },
+      {
+        label: "Business Card Design",
+        link: "/business-card-design-in-dubai",
+      },
+      // add a divider if you want
+      { type: "divider" }, // for a visual break
+      {
+        label: "Web Design Services",
+        link: "/web-design-services-in-dubai",
+        items: [
+          { label: "UI UX Design", link: "/ui-ux-design-in-dubai" },
+          { label: "Website Redesign", link: "/website-redesign-in-dubai" },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Website Development", link: "/website-development-services-in-dubai",
+  },
+];
+
+
+const businessSolutions = [
+  "Real Estate",
+  "Healthcare",
+  "Education",
+  "Retail",
+  "FMCG",
+  "Automobile",
+  "Banking",
+  "IT/Tech",
+  "Jewelry",
+];
+
+
+export default function Header() {
+  const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const [showBusinessDropdown, setShowBusinessDropdown] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const menuRef = useRef(null);
+  const businessDropdownRef = useRef(null);
+  const businessCloseTimerRef = useRef(null);
+  const closeTimerRef = useRef(null); // ref to hold timer
+
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setShowMegaMenu(false);
+      }
+      if (
+        businessDropdownRef.current &&
+        !businessDropdownRef.current.contains(e.target)
+      ) {
+        setShowBusinessDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+
+  // MegaMenu handlers
+  const handleMouseEnter = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setShowMegaMenu(true);
+  };
+
+
+  const handleMouseLeave = () => {
+    closeTimerRef.current = setTimeout(() => {
+      setShowMegaMenu(false);
+    }, 250);
+  };
+
+
+  // Business dropdown handlers
+  const handleBusinessMouseEnter = () => {
+    if (businessCloseTimerRef.current) {
+      clearTimeout(businessCloseTimerRef.current);
+      businessCloseTimerRef.current = null;
+    }
+    setShowBusinessDropdown(true);
+  };
+
+
+  const handleBusinessMouseLeave = () => {
+    businessCloseTimerRef.current = setTimeout(() => {
+      setShowBusinessDropdown(false);
+    }, 250);
+  };
+
+
+  const handleLinkClick = () => {
+    setShowMegaMenu(false);
+    setShowBusinessDropdown(false);
+  };
+
+
+  return (
+    <header
+      className={`fixed top-8 left-8 right-8 z-50 backdrop-blur-md shadow-md transition-all duration-300 ${
+        scrolled ? "bg-primary bg-opacity-95" : "bg-white bg-opacity-40"
+      } rounded-lg`}
+      style={{
+        marginLeft: "30vh",
+        marginRight: "30vh",
+      }}
+    >
+      <div className="px-6 py-4 flex justify-center items-center space-x-12 relative">
+        <NavLink
+          to="/"
+          className={`text-2xl font-bold cursor-pointer ${
+            scrolled ? "text-secondary" : "text-primary"
+          }`}
+        >
+          BrandLogo
+        </NavLink>
+
+
+        <nav className="flex items-center space-x-8">
+          <NavLink to="/" className="group font-medium hover:text-accent" exact>
+            Home
+          </NavLink>
+
+
+          <NavLink
+            to="/about"
+            className="group font-medium hover:text-accent"
+          >
+            About Us
+          </NavLink>
+
+
+          <div
+            className="relative"
+            ref={menuRef}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <button className="font-medium hover:text-accent">Services</button>
+
+
+            {showMegaMenu && (
+              <div className="absolute top-10 left-1/2 -translate-x-1/4 mt-2 w-[900px] bg-white shadow-lg rounded-2xl py-10 px-14 flex gap-10 z-50 border border-gray-100">
+                {megaMenu.map((section, idx) => {
+                  const items = section.items || [];
+                  const isActiveSection =
+                    items.some((item) => item.link === currentPath) ||
+                    section.link === currentPath;
+
+
+                  return (
+                    <div key={idx} className="flex-1 min-w-[140px]">
+                      <NavLink
+                        to={section.link || "#"}
+                        className={`block font-semibold mb-4 text-base tracking-wide ${
+                          isActiveSection
+                            ? "text-accent font-bold"
+                            : "text-gray-900"
+                        } hover:text-accent transition`}
+                        onClick={handleLinkClick}
+                      >
+                        {section.label}
+                      </NavLink>
+
+
+                      {items.length > 0 && (
+                        <ul className="flex flex-col gap-2">
+                          {items.map((item, i) => {
+                            if (item.type === "divider") {
+                              return (
+                                <hr key={i} className="my-1 border-gray-200" />
+                              );
+                            }
+                            if (item.items) {
+                              return (
+                                <div key={i} className="mt-3">
+                                  <NavLink
+                                    to={item.link || "#"}
+                                    className="font-semibold mb-2 text-base block hover:text-accent transition"
+                                    onClick={handleLinkClick}
+                                  >
+                                    {item.label}
+                                  </NavLink>
+                                  <ul className="flex flex-col gap-2">
+                                    {item.items.map((subitem, j) => (
+                                      <li key={j}>
+                                        <NavLink
+                                          to={subitem.link}
+                                          className="block px-2 py-1 rounded-lg text-sm text-gray-700 hover:text-accent hover:bg-gray-50"
+                                          onClick={handleLinkClick}
+                                        >
+                                          {subitem.label}
+                                        </NavLink>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              );
+                            }
+
+
+                            // standard item
+                            return (
+                              <li key={i}>
+                                <NavLink
+                                  to={item.link}
+                                  className="block px-2 py-1 rounded-lg text-sm text-gray-700 hover:text-accent hover:bg-gray-50"
+                                  onClick={handleLinkClick}
+                                >
+                                  {item.label}
+                                </NavLink>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
+
+
+                      {items.length === 0 && (
+                        <div className="mt-6 text-gray-400 text-sm italic px-2">
+                          {/* Empty or placeholder if needed */}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+
+          <div
+            className="relative"
+            ref={businessDropdownRef}
+            onMouseEnter={handleBusinessMouseEnter}
+            onMouseLeave={handleBusinessMouseLeave}
+          >
+            <button className="font-medium hover:text-accent">
+              Business Solutions
+            </button>
+
+
+            {showBusinessDropdown && (
+              <ul className="absolute top-10 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+                {businessSolutions.map((solution, idx) => (
+                  <li key={idx}>
+                    <NavLink
+                      to={`/${solution.toLowerCase().replace(/\s/g, "-")}`}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-accent transition"
+                      onClick={handleLinkClick}
+                    >
+                      {solution}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+
+          <NavLink
+            to="/blog"
+            className="group font-medium hover:text-accent"
+          >
+            Blog
+          </NavLink>
+
+
+          <NavLink
+            to="/contact"
+            className="group font-medium hover:text-accent"
+          >
+            Contact Us
+          </NavLink>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+here the current highlighting for items is not comming
 
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
